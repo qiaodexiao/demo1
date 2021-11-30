@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.at.ct.web.dao.UserDao">
+
+
+	<resultMap id="userMap" type="com.at.ct.web.bean.User">
+		<id column="id" property="id"></id>
+		<result column="tel" property="tel"></result>
+		<result column="tname" property="tname"></result>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		insert into ct_user(tel,tname) values(#{tel},#{tname})
+	</insert>
+
+	<update id="update">
+		update ct_user set tel = #{tel},tname = #{tname}
+		where id = #{id}
+	</update>
+
+	<delete id="delete">
+		delete from ct_user where id = #{id}
+	</delete>
+
+	<select id="get" resultMap="userMap">
+		select id,tel,tname from ct_user where id = #{id}
+	</select>
+
+
+	<select id="list" resultMap="userMap">
+		select id,tel,tname  from ct_user
+	</select>
+
+	<select id="query" resultMap="userMap">
+		SELECT * FROM ct_user
+		<where>
+
+			<if test="userTel != null">
+				and tel LIKE CONCAT('%',#{usertel},'%')
+			</if>
+
+			<if test="userName != null">
+				AND tname LIKE CONCAT('%',#{username},'%')
+			</if>
+		</where>
+
+	</select>
+
+
+	<select id="queryForCount" resultType="integer">
+		SELECT count(*) FROM ct_user
+		<where>
+
+			<if test="userTel != null">
+				and tel LIKE CONCAT('%',#{userTel},'%')
+			</if>
+
+			<if test="userName != null">
+				AND tname LIKE CONCAT('%',#{userName},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="queryForList" resultMap="userMap">
+		SELECT * FROM ct_user
+		<where>
+
+			<if test="userTel != null">
+				and tel LIKE CONCAT('%',#{userTel},'%')
+			</if>
+
+			<if test="userName != null">
+				AND tname LIKE CONCAT('%',#{userName},'%')
+			</if>
+		</where>
+		limit #{start},#{pageSize}
+	</select>
+	
+</mapper>
